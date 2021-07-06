@@ -1,0 +1,45 @@
+version: '3'
+services:
+    db:
+        image: mysql:8.0.20
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - ./.database/db:/var/lib/mysql
+        build:
+            context: docker/db
+            args:
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_START_TIMEOUT: 900
+        ports:
+            - 3306:3306
+        networks:
+            - main
+        user: mysql
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        volumes:
+            - ./:/app
+        networks:
+            - main
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        volumes:
+            - ./:/app
+        ports:
+            - 80:80
+        networks:
+            - main
+
+networks:
+    main:
