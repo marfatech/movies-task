@@ -2,6 +2,11 @@ FROM php:7.4-fpm
 
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/docker-php.ini
 
+ARG HOST_USER
+ARG HOST_GROUP
+ARG HOST_UID
+ARG HOST_GID
+
 RUN apt-get update && apt-get install -y \
     gnupg \
     g++ \
@@ -26,4 +31,14 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN groupadd -g ${HOST_GID} ${HOST_GROUP} \
+  && useradd -r -g ${HOST_GROUP} ${HOST_USER} \
+  && usermod -u ${HOST_UID} ${HOST_USER}
+
+RUN mkdir /home/${HOST_USER}
+
+RUN chown -R ${HOST_USER} /home/${HOST_USER}
+
 WORKDIR /app
+
+USER ${HOST_USER}
