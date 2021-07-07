@@ -27,6 +27,15 @@
    В случае успеха в консоли должны увидеть:<br />
    `int(0)`, так как на этот момент таблиц Вы еще не создали
    
+## Пересборка контейнеров (если нужно)
+
+Находясь в корне проекта запустить последовательно команды<br />
+   `sudo rm -rf .database/db`<br />
+   `docker kill $(docker ps -q)`<br />
+   `docker rm $(docker ps -a -q)`<br />
+   `docker system prune`<br />
+   `docker-compose build`<br />
+   `docker-compose up -d`<br />
 
 ## Введение
 
