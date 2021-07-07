@@ -31,18 +31,4 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-<<<<<<< HEAD:docker/php/macos.Dockerfile
 WORKDIR /app
-=======
-RUN groupadd -g ${HOST_GID} ${HOST_GROUP} \
-  && useradd -r -g ${HOST_GROUP} ${HOST_USER} \
-  && usermod -u ${HOST_UID} ${HOST_USER}
-
-RUN mkdir /home/${HOST_USER}
-
-RUN chown -R ${HOST_USER} /home/${HOST_USER}
-
-WORKDIR /app
-
-USER ${HOST_USER}
->>>>>>> 708e5026c389b13c48967f95d0a97d301bce0ab6:docker/php/Dockerfile
